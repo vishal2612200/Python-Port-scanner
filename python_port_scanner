@@ -1,0 +1,53 @@
+import socket
+from datetime import datetime
+import sys
+ 
+for i in range(20): 
+    print("__",end = "")
+
+# Input targeted website domain
+TargetServer    = str(input("Enter a targeted website: "))
+TargetServerIP  = socket.gethostbyname(TargetServer)
+# Printing the targeted website ip address
+
+print("\n Scanning remote host ip address :", TargetServerIP)
+for i in range(20): 
+    print("__",end = "")
+print("\n") 
+# variable for checking the initial timing 
+#of process to be started
+intial_time = datetime.now()
+ 
+# Range function is used here to check the open port between 1 to 100
+ 
+try:
+    for port in range(1,100):  
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#syntax for defining the socket family
+        result = sock.connect_ex((TargetServerIP, port))
+        if result == 0:
+            print ("Open Port : ",port)
+        sock.close()
+
+
+# to show the connection error 
+except socket.error:
+    print("Couldn't connect to server.Please try again Later")
+    sys.exit()
+
+#to show incorrect targeted website name
+except socket.gaierror:
+    print("Try to enter correct targeted website i.e Hostname could not be resolved.")
+    sys.exit()
+ 
+
+# if any pressed in between the process 
+except KeyboardInterrupt:
+    print("You pressed some key.Process Exited")
+    sys.exit()
+  
+# Checking the completion Time
+final_time = datetime.now()   
+ 
+# Printing the information to screen
+print("\n Total time taken to complete the scanning process: ", final_time - intial_time)
+
